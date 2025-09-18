@@ -114,7 +114,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// N'activer la redirection HTTPS que si un port HTTPS est configuré
+var httpsPortEnv = Environment.GetEnvironmentVariable("ASPNETCORE_HTTPS_PORT")
+    ?? builder.Configuration["ASPNETCORE_HTTPS_PORT"];
+if (!string.IsNullOrWhiteSpace(httpsPortEnv))
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseMiddleware<TaskManagerAPI.Middleware.ExceptionHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
