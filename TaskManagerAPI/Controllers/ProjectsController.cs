@@ -16,10 +16,10 @@ namespace TaskManagerAPI.Controllers
         private readonly IMapper _mapper = mapper;
 
         [HttpGet]
-        public async Task<ActionResult<List<ProjectDto>>> GetAll(CancellationToken ct)
+        public async Task<ActionResult<Project>> GetAll(CancellationToken ct)
         {
             var items = await _service.GetAllAsync(ct);
-            return Ok(_mapper.Map<List<ProjectDto>>(items));
+            return Ok(_mapper.Map<List<Project>>(items));
         }
 
         [HttpGet("{id:int}")]
@@ -38,10 +38,18 @@ namespace TaskManagerAPI.Controllers
 
         [HttpPost]
         public async Task<ActionResult<ProjectDto>> Create(ProjectDto projectDto, CancellationToken ct)
-        {
+        {   
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value 
+                              ?? User.FindFirst("sub")?.Value 
+                              ?? User.FindFirst("id")?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+                return Unauthorized("Utilisateur non authentifié.");
+                
             var project = _mapper.Map<Project>(projectDto);
+            project.UserId = int.Parse(userIdClaim);
+
             var created = await _service.CreateAsync(project, ct);
-            var createdDto = _mapper.Map<ProjectDto>(created);
+            var createdDto = _mapper.Map<ProjectDto>(created);  
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, createdDto);
         }
 
