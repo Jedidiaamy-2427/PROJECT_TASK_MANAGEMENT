@@ -1,0 +1,10 @@
+/** PROJECT LIST */
+.btn { @apply bg-blue-600 text-white px-3 py-1 rounded; }
+.btn-small { @apply bg-gray-200 px-2 py-0.5 rounded; }
+.btn-danger { @apply bg-red-600 text-white px-2 py-0.5 rounded; }
+
+/** PROJECT FORM */
+.input { @apply border p-2 rounded w-full; }
+.btn { @apply bg-blue-600 text-white px-3 py-1 rounded; }
+.container { @apply mx-auto p-4; }
+    

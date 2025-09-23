@@ -1,0 +1,20 @@
+<div class="min-h-screen bg-gray-50">
+  <header *ngIf="auth._token()" class="p-4 bg-blue-600 text-white flex justify-between items-center">
+    <h1 class="text-xl font-bold">{{ title() }}</h1>
+
+    <nav class="space-x-4">
+      <a href="/projects" routerLinkActive="font-bold underline">Projects</a>
+      <a href="/tasks" routerLinkActive="font-bold underline">Tasks</a>
+      <ng-container *ngIf="auth._token(); else loggedOut">
+        <button (click)="logout()" class="underline">Logout</button>
+      </ng-container>
+      <ng-template #loggedOut>
+        <a routerLink="/login" routerLinkActive="font-bold underline">Login</a>
+      </ng-template>
+    </nav>
+
+  </header> 
+  <main class="p-4">
+    <router-outlet></router-outlet>
+  </main>
+</div>

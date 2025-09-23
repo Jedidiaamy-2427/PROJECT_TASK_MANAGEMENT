@@ -1,0 +1,8 @@
+<div class="container mp-4 max-w-md">
+  <h3 class="text-xl mb-2">{{ isEdit ? 'Modifier' : 'Nouveau' }} Projet</h3>
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <input formControlName="name" placeholder="Nom" class="input" />
+    <textarea formControlName="description" placeholder="Description" class="input mt-2"></textarea>
+    <button class="btn mt-3" [disabled]="form.invalid">{{ isEdit ? 'Enregistrer' : 'Créer' }}</button>
+  </form>
+</div>
