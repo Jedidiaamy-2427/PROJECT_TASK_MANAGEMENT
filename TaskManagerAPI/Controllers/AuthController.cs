@@ -28,7 +28,14 @@ namespace TaskManagerAPI.Controllers
         public async Task<ActionResult<AuthResponse>> Login(LoginRequest request, CancellationToken ct)
         {
             var resp = await _authService.LoginAsync(request, ct);
-            if (resp is null) return Unauthorized();
+            if (resp is null)
+            {
+                return NotFound(new
+                {
+                    Title = "Utilisateur non trouvé ou mot de passe incorrect",
+                    TraceID = HttpContext.TraceIdentifier
+                });
+            }
             return Ok(resp);
         }
     }
