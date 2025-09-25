@@ -92,13 +92,13 @@ http://localhost:8080/swagger/index.html
 
 1. Voici un aperçu de l'interface Login de Task Management App :
 
-![Dashboard Task Management](assets/login.png)
+![Login Page](assets/capture/login_page.png)
 
 Le projet possède une interface d'authentification 
 
 
 2. Voici un aperçu de l’interface de Task Management App :
 
-![Dashboard Task Management](assets/task_page.png)
+![Dashboard Task Management](assets/capture/task_page.png)
 
 Le projet possède une sidebar dynamique, un navbar moderne et des badges pour les tâches en retard.
