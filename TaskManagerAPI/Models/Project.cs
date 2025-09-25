@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace TaskManagerAPI.Models
 {
     public class Project
@@ -7,7 +9,7 @@ namespace TaskManagerAPI.Models
         public string Description { get; set; } = string.Empty;
         public int? UserId { get; set; }
         public User? User { get; set; }
-
+        [JsonIgnore]
         public List<TaskItem> TaskItems { get; set; } = [];
     }
 }

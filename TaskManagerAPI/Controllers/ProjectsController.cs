@@ -47,7 +47,7 @@ namespace TaskManagerAPI.Controllers
                 
             var project = _mapper.Map<Project>(projectDto);
             project.UserId = int.Parse(userIdClaim);
-
+    
             var created = await _service.CreateAsync(project, ct);
             var createdDto = _mapper.Map<ProjectDto>(created);  
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, createdDto);

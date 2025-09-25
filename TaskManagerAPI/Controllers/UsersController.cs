@@ -16,10 +16,10 @@ namespace TaskManagerAPI.Controllers
         private readonly IMapper _mapper = mapper;
 
         [HttpGet]
-        public async Task<ActionResult<List<UserDto>>> GetAll(CancellationToken ct)
+        public async Task<ActionResult<List<User>>> GetAll(CancellationToken ct)
         {
             var items = await _service.GetAllAsync(ct);
-            return Ok(_mapper.Map<List<UserDto>>(items));
+            return Ok(_mapper.Map<List<User>>(items));
         }
 
         [HttpGet("{id:int}")]

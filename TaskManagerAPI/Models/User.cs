@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace TaskManagerAPI.Models
 {
     public class User
@@ -6,7 +8,7 @@ namespace TaskManagerAPI.Models
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
-
+        [JsonIgnore]
         public List<Project> Projects { get; set; } = [];
     }
 }

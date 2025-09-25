@@ -9,6 +9,7 @@ namespace TaskManagerAPI.Repositories
         Task<List<TaskItem>> GetByProjectIdAsync(int projectId, CancellationToken cancellationToken = default);
         Task<TaskItem> AddAsync(TaskItem task, CancellationToken cancellationToken = default);
         Task UpdateAsync(TaskItem task, CancellationToken cancellationToken = default);
+        Task UpdateStatusAsync(int id, int isCompleted, CancellationToken cancellationToken = default);
         Task DeleteAsync(int id, CancellationToken cancellationToken = default);
     }
 }

@@ -16,10 +16,10 @@ namespace TaskManagerAPI.Controllers
         private readonly IMapper _mapper = mapper;
 
         [HttpGet]
-        public async Task<ActionResult<List<TaskItemDto>>> GetAll(CancellationToken ct)
+        public async Task<ActionResult<List<TaskItem>>> GetAll(CancellationToken ct)
         {
             var items = await _service.GetAllAsync(ct);
-            return Ok(_mapper.Map<List<TaskItemDto>>(items));
+            return Ok(_mapper.Map<List<TaskItem>>(items));
         }
 
         [HttpGet("{id:int}")]
@@ -40,6 +40,19 @@ namespace TaskManagerAPI.Controllers
         public async Task<ActionResult<TaskItemDto>> Create(TaskItemDto taskDto, CancellationToken ct)
         {
             var task = _mapper.Map<TaskItem>(taskDto);
+
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value 
+                              ?? User.FindFirst("sub")?.Value 
+                              ?? User.FindFirst("id")?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+                return Unauthorized("Utilisateur non authentifié.");
+            
+            // Garantir les valeurs par défaut
+            task.CreatedAt = DateTime.UtcNow;
+            task.IsCompleted = 0;
+            task.UserId = int.Parse(userIdClaim);
+            task.Duration = DateTime.SpecifyKind(task.Duration, DateTimeKind.Utc);
+
             var created = await _service.CreateAsync(task, ct);
             var createdDto = _mapper.Map<TaskItemDto>(created);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, createdDto);
@@ -50,9 +63,18 @@ namespace TaskManagerAPI.Controllers
         {
             var task = _mapper.Map<TaskItem>(taskDto);
             task.Id = id;
+            task.IsCompleted = 1;
+            task.Duration = DateTime.SpecifyKind(task.Duration, DateTimeKind.Utc);
             await _service.UpdateAsync(task, ct);
             return NoContent();
         }
+        [HttpPut("{id:int}/status")]
+        public async Task<IActionResult> UpdateStatus(int id, int isCompleted, CancellationToken ct)
+        {
+            Console.WriteLine("===>status" + isCompleted);
+            await _service.UpdateStatusAsync(id, isCompleted, ct);
+            return NoContent();
+        }   
 
         [HttpPost("{id:int}/toggle-complete")]
         public async Task<IActionResult> ToggleComplete(int id, CancellationToken ct)

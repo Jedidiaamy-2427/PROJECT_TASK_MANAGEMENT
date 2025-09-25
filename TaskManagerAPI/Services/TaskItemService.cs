@@ -22,6 +22,9 @@ namespace TaskManagerAPI.Services
         public Task UpdateAsync(TaskItem task, CancellationToken cancellationToken = default)
             => _repository.UpdateAsync(task, cancellationToken);
 
+        public Task UpdateStatusAsync(int id, int isCompleted, CancellationToken cancellationToken = default)
+            => _repository.UpdateStatusAsync(id, isCompleted, cancellationToken);
+
         public Task DeleteAsync(int id, CancellationToken cancellationToken = default)
             => _repository.DeleteAsync(id, cancellationToken);
 
@@ -29,7 +32,7 @@ namespace TaskManagerAPI.Services
         {
             var existing = await _repository.GetByIdAsync(id, cancellationToken);
             if (existing is null) return;
-            existing.IsCompleted = !existing.IsCompleted;
+            existing.IsCompleted = existing.IsCompleted == 0 ? 1 : (existing.IsCompleted == 1 ? 2 : 0);
             await _repository.UpdateAsync(existing, cancellationToken);
         }
     }

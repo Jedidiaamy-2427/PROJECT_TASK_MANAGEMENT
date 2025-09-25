@@ -38,6 +38,17 @@ namespace TaskManagerAPI.Repositories
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task UpdateStatusAsync(int id, int isCompleted, CancellationToken cancellationToken = default)
+        {
+            var existing = await _dbContext.TaskItems.FindAsync([id], cancellationToken);
+            if (existing is not null)
+            {
+                existing.IsCompleted = isCompleted;
+                _dbContext.TaskItems.Update(existing);
+                await _dbContext.SaveChangesAsync(cancellationToken);
+            }
+        }
+
         public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
             var existing = await _dbContext.TaskItems.FindAsync([id], cancellationToken);
