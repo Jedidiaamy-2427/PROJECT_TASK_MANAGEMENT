@@ -25,6 +25,14 @@ services:
       - "8080:8080"
     depends_on:
       - db
+  front:
+    build:
+      context: ./FrontTaskManager
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - api
 volumes:
   pgdata:
 
