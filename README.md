@@ -36,11 +36,20 @@ Cette application est un projet de démonstration qui illustre les bonnes pratiq
 
 ### 4. Fonctionnalités Clés
 
-- Systeme d'Authentification
-- Gestion complète des **projets et tâches**  
-- Visualisation des tâches avec badge  
+- 🔑 **Authentification sécurisée avec JWT** (JSON Web Tokens)
+- 📂 **Gestion des projets et tâches** : création, édition et suppression
+- 🕒 **Suivi des deadlines** : indication automatique des tâches en retard
+- 📊 **Visualisation** des tâches avec badge  
 - Formulaires dynamiques pour la création et la modification de tâches  
 - Architecture prête pour ajouter facilement de nouvelles fonctionnalités
+
+### 🚀 Extensibilité et évolutions à venir
+Le projet a été conçu avec une architecture **SOLID** et **Clean Code**, ce qui le rend facilement **extensible**.  
+De nouvelles fonctionnalités sont prévues prochainement, par exemple :
+- Ajout de rôles et permissions utilisateurs
+- Notifications en temps réel (SignalR ou WebSocket)
+- Tableaux de bord analytiques
+- Gestion collaborative multi-utilisateurs
 
 ### 5. Conteneurisation et déploiement
 
