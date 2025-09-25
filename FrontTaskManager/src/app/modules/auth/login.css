@@ -1,4 +1,4 @@
 .input { @apply border p-2 rounded w-full; }
-.btn { @apply bg-blue-600 text-white px-3 py-1 rounded; }
+.btn { @apply bg-sky-600 text-white px-3 py-1 rounded; }
 .title { @apply text-2xl text-center font-bold mb-5;}
 .loginError { @apply text-red-500 text-sm mb-2 block; }

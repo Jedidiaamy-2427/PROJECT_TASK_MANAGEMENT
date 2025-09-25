@@ -30,12 +30,10 @@ export class Login {
       next: (user: User | ResponseError) => {
         this.loginError.set(null);
         if ('token' in user) {
-          console.log('LOGIN SUCCESS', user);
           localStorage.setItem('auth_token', user.token ?? '');
           this.auth._token.set(user.token ?? null);
           this.router.navigate(['/projects']);
         } else {
-          console.error('LOGIN ERROR', user);
           this.form.setErrors({ invalidLogin: true });
         }
       },

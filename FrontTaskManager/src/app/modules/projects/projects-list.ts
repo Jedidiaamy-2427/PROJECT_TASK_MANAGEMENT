@@ -2,6 +2,7 @@ import { Component, OnInit, Signal } from '@angular/core';
 import { ProjectService } from '../../core/services/project';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { TitleService } from '../../core/services/titleService';
 
 @Component({
   selector: 'app-projects-list',
@@ -13,15 +14,17 @@ import { CommonModule } from '@angular/common';
 export class ProjectsList implements OnInit {
   projects: ProjectService['projects'];
   projectCount: Signal<number>;
+ 
   NoProjectTitle = () => this.projectCount() === 0 ? `Aucun projet pour l'instant` : `Total Projects: ${this.projectCount()}`;
 
-  constructor(private projectService: ProjectService, private router: Router) {
+  constructor(private projectService: ProjectService, private router: Router, private titleService: TitleService) {
     this.projects = this.projectService.projects;
     this.projectCount = this.projectService.projectsCount;
   }
 
   ngOnInit() {
     this.projectService.loadAll().subscribe();
+    this.titleService.setTitle(`Liste des projets`);
   }
 
   create() { this.router.navigate(['/projects/new']); }

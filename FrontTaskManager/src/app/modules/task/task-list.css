@@ -1,0 +1,146 @@
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.project-description{
+  display: flex;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+.project-description::before {
+  content: "Description: ";
+  font-weight: bold;  
+  margin-right: 0.25rem;
+  color: #333;  
+}
+
+
+.task-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.task-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f9f9f9;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+}
+
+.btn, .btn-small, .btn-danger {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn { background: #007bff; color: white; }
+.btn-small { background: #ffc107; color: black; }
+.btn-danger { background: #dc3545; color: white; }
+.status { font-weight: bold; padding: auto;}
+
+.projct-title {
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.task-table {
+  width: 100%;
+  border-collapse:separate;
+  margin-top: 1rem;
+  background: #fff;
+  box-shadow: 0 2px 8px #0001;
+  font-size: 0.9rem;
+}
+/* Fixe la largeur de chaque colonne */
+.task-table th:nth-child(1), .task-table td:nth-child(1) { /* Tâches */
+  width: 25%;
+  min-width: 120px;
+  max-width: 200px;
+  word-break: break-word;
+  white-space: normal;
+}
+.task-table th:nth-child(2), .task-table td:nth-child(2) { /* Description */
+  width: 29%;
+  min-width: 180px;
+  max-width: 350px;
+  word-break: break-word;
+  white-space: normal;
+}
+.task-table th:nth-child(3), .task-table td:nth-child(3) { /* Statut */
+  width: 14%;
+  min-width: 80px;
+  max-width: 120px;
+  text-align: center;
+}
+.task-table th:nth-child(4), .task-table td:nth-child(4) { /* Créé le */
+  width: 18%;
+  min-width: 120px;
+  max-width: 160px;
+}
+
+.task-table th:nth-child(5), .task-table td:nth-child(5) { /* Action */
+  width: 18%;
+  min-width: 80px;
+  max-width: 100px;
+  text-align: center;
+}
+
+.task-table th:nth-child(6), .task-table td:nth-child(5) { /* Action */
+  width: 12%;
+  min-width: 80px;
+  max-width: 100px;
+  text-align: center;
+}
+
+/* Forcer le retour à la ligne si trop long */
+.task-table td {
+  word-break: break-word;
+  white-space: normal;
+  vertical-align: top;
+} 
+
+input[type="date"] {
+  position: relative;
+}
+
+input[type="date"]:not(:focus):not([value])::before {
+  content: attr(placeholder);
+  position: absolute;
+  left: 5px; /* même décalage que ton padding */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none; /* pour ne pas bloquer le clic */
+  font-family: inherit;
+  font-size: inherit;
+  background-color: #ffff;
+  width: 50%;
+}
+
+/* Cacher le pseudo-placeholder si une valeur est présente ou si l'input est focus */
+input[type="date"]:not(:placeholder-shown)::before {
+  content: '';
+}

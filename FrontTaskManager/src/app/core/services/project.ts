@@ -1,6 +1,7 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment.development';
 
 export interface Project {
   id: number;
@@ -10,7 +11,7 @@ export interface Project {
 
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
-  private api = 'http://localhost:8080/api/Projects';
+  private api = `${environment.apiUrl}/Projects`;
   projects = signal<Project[]>([]);
   projectsCount = computed(() => this.projects().length);
 

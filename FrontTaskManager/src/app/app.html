@@ -1,20 +1,56 @@
-<div class="min-h-screen bg-gray-50">
-  <header *ngIf="auth._token()" class="p-4 bg-blue-600 text-white flex justify-between items-center">
-    <h1 class="text-xl font-bold">{{ title() }}</h1>
+<div class="flex h-screen bg-gray-50">
+  <!-- Sidebar -->
+  <aside *ngIf="auth._token()" class="w-50 bg-sky-800 text-white p-4 flex flex-col">
+    <!-- App Title on top -->
+    <img src="/assets/logo/task_logo.png" alt="Logout" class="h-12 w-13 mx-auto " /> &nbsp; 
+    <h1 class="text-xl font-bold mb-6 ">{{ title() }}</h1>
 
-    <nav class="space-x-4">
-      <a href="/projects" routerLinkActive="font-bold underline">Projects</a>
-      <a href="/tasks" routerLinkActive="font-bold underline">Tasks</a>
-      <ng-container *ngIf="auth._token(); else loggedOut">
-        <button (click)="logout()" class="underline">Logout</button>
-      </ng-container>
-      <ng-template #loggedOut>
-        <a routerLink="/login" routerLinkActive="font-bold underline">Login</a>
-      </ng-template>
+    <!-- Menu -->
+    <nav class="flex flex-col space-y-2 text-lg">
+      <a
+        href="/projects"
+        routerLinkActive="bg-sky-800 fsont-semibold"
+        class="px-3 py-2 rounded hover:bg-sky-600 flex items-center space-x-2"
+      >
+        <img src="/assets/icon/project.svg" alt="Logout" class="h-6 w-6  " /> &nbsp; 
+        Projets
+      </a>
+      <a
+        href="/tasks"
+        routerLinkActive="bg-sky-800 font-semibold"
+        class="px-3 py-2 rounded hover:bg-sky-600 flex items-center space-x-2"
+      >
+         <img src="/assets/icon/task.svg" alt="Logout" class="h-7 w-7 ml-0"/>&nbsp;
+         Mes tâches 
+      </a>
     </nav>
+  </aside>
 
-  </header> 
-  <main class="p-4">
-    <router-outlet></router-outlet>
-  </main>
+  <!-- Main content -->
+  <div class="flex-1 flex flex-col">
+    <!-- Top Navbar -->
+    <header *ngIf="auth._token()" class="flex justify-between items-center px-6 py-3">
+      <h1 class="text-xl">{{ titleService.title()}}</h1>
+      <!-- User Info + Logout -->
+      <div class="flex items-center space-x-4 flex justify-end">
+        <span>👤  {{ getUsernameToken() }}</span>
+
+        <ng-container *ngIf="auth._token(); else loggedOut">
+          <button (click)="logout()" class="flex items-center space-x-1 hover:text-gray-700">
+            <span>Déconnexion</span>
+            <img src="/assets/icon/Logout Icon.svg" alt="Logout" class="h-5 w-5" />
+          </button>
+        </ng-container>
+
+        <ng-template #loggedOut>
+          <a routerLink="/login" routerLinkActive="font-bold underline">Login</a>
+        </ng-template>
+      </div>
+    </header>
+
+    <!-- Routed Page Content -->
+    <main class="flex-1 p-6 overflow-y-auto">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
 </div>
