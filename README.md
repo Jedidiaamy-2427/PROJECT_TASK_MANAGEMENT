@@ -76,9 +76,9 @@ docker compose up --build
 
 3. Accéder à l’application :
 
-.Frontend Angular: <http://localhost:4200>
-.Backend API .NET: <http://localhost:8080/api/...>
-.PostgreSQL sera créé automatiquement avec les tables nécessaires via EF Core Migrations.
+- Frontend Angular: <http://localhost:4200>
+- Backend API .NET: <http://localhost:8080/api/...>
+- PostgreSQL sera créé automatiquement avec les tables nécessaires via EF Core Migrations.
 
 ## API Documentation
 
