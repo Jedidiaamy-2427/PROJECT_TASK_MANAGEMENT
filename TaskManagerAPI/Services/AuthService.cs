@@ -15,11 +15,14 @@ namespace TaskManagerAPI.Services
     {
         Task<AuthResponse?> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default);
         Task<AuthResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default);
+        Task<AuthResponse?> RefreshAsync(string refreshToken, CancellationToken cancellationToken = default);
+        Task LogoutAsync(string refreshToken, CancellationToken cancellationToken = default);
     }
 
-    public class AuthService(IUserRepository userRepository, IOptions<JwtOptions> jwtOptions) : IAuthService
+    public class AuthService(IUserRepository userRepository, IRefreshTokenRepository refreshRepo, IOptions<JwtOptions> jwtOptions) : IAuthService
     {
         private readonly IUserRepository _userRepository = userRepository;
+        private readonly IRefreshTokenRepository _refreshRepo = refreshRepo;
         private readonly JwtOptions _jwtOptions = jwtOptions.Value;
 
         public async Task<AuthResponse?> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
@@ -32,7 +35,8 @@ namespace TaskManagerAPI.Services
             if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash)) return null;
 
             var token = GenerateJwtToken(user);
-            return new AuthResponse { Token = token, Username = user.Username, Email = user.Email };
+            var r = await IssueRefreshTokenAsync(user, cancellationToken);
+            return new AuthResponse { Token = token, RefreshToken = r.Token, Username = user.Username, Email = user.Email };
         }
 
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
@@ -52,7 +56,32 @@ namespace TaskManagerAPI.Services
             await _userRepository.AddAsync(user, cancellationToken);
 
             var token = GenerateJwtToken(user);
-            return new AuthResponse { Token = token, Username = user.Username, Email = user.Email };
+            var r = await IssueRefreshTokenAsync(user, cancellationToken);
+            return new AuthResponse { Token = token, RefreshToken = r.Token, Username = user.Username, Email = user.Email };
+        }
+
+        public async Task<AuthResponse?> RefreshAsync(string refreshToken, CancellationToken cancellationToken = default)
+        {
+            var rt = await _refreshRepo.GetAsync(refreshToken, cancellationToken);
+            if (rt is null || !rt.IsActive) return null;
+
+            // fetch user
+            var user = await _userRepository.GetByIdAsync(rt.UserId, cancellationToken);
+            if (user is null) return null;
+
+            // rotate token: invalidate current & issue new
+            var newRt = await IssueRefreshTokenAsync(user, cancellationToken);
+            await _refreshRepo.InvalidateAsync(rt, newRt.Token, cancellationToken);
+
+            var newAccess = GenerateJwtToken(user);
+            return new AuthResponse { Token = newAccess, RefreshToken = newRt.Token, Username = user.Username, Email = user.Email };
+        }
+
+        public async Task LogoutAsync(string refreshToken, CancellationToken cancellationToken = default)
+        {
+            var rt = await _refreshRepo.GetAsync(refreshToken, cancellationToken);
+            if (rt is null || !rt.IsActive) return;
+            await _refreshRepo.InvalidateAsync(rt, null, cancellationToken);
         }
 
         private string GenerateJwtToken(User user)
@@ -76,6 +105,18 @@ namespace TaskManagerAPI.Services
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private async Task<RefreshToken> IssueRefreshTokenAsync(User user, CancellationToken cancellationToken)
+        {
+            var token = Convert.ToBase64String(Guid.NewGuid().ToByteArray()) + Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+            var rt = new RefreshToken
+            {
+                UserId = user.Id,
+                Token = token,
+                ExpiresAtUtc = DateTime.UtcNow.AddDays(_jwtOptions.RefreshExpiresDays)
+            };
+            return await _refreshRepo.AddAsync(rt, cancellationToken);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace TaskManagerAPI.Data
         public DbSet<TaskItem> TaskItems { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +27,10 @@ namespace TaskManagerAPI.Data
 
             modelBuilder.Entity<TaskItem>()
                 .HasIndex(t => t.ProjectId);
+
+            modelBuilder.Entity<RefreshToken>()
+                .HasIndex(r => new { r.UserId, r.Token })
+                .IsUnique();
         }
     }
 }

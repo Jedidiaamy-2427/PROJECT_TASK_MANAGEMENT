@@ -38,6 +38,21 @@ namespace TaskManagerAPI.Controllers
             }
             return Ok(resp);
         }
+
+        [HttpPost("refresh")]
+        public async Task<ActionResult<AuthResponse>> Refresh(RefreshRequest request, CancellationToken ct)
+        {
+            var resp = await _authService.RefreshAsync(request.RefreshToken, ct);
+            if (resp is null) return Unauthorized();
+            return Ok(resp);
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout(RefreshRequest request, CancellationToken ct)
+        {
+            await _authService.LogoutAsync(request.RefreshToken, ct);
+            return NoContent();
+        }
     }
 }
 
