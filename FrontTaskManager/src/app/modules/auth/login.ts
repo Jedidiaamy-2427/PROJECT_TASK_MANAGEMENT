@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService, ResponseError, User } from '../../core/services/auth';
+import { AuthService, ResponseError, AuthResponse } from '../../core/services/auth';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -25,13 +25,11 @@ export class Login {
 
   submit() {
     if (this.form.invalid) return;
-    const { username, password } = this.form.value;
+    const { username, password } = this.form.value as { username: string; password: string };
     this.auth.login(username, password).subscribe({
-      next: (user: User | ResponseError) => {
+      next: (user: AuthResponse | ResponseError) => {
         this.loginError.set(null);
         if ('token' in user) {
-          localStorage.setItem('auth_token', user.token ?? '');
-          this.auth._token.set(user.token ?? null);
           this.router.navigate(['/projects']);
         } else {
           this.form.setErrors({ invalidLogin: true });
