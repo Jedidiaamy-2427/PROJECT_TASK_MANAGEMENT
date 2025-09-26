@@ -25,13 +25,15 @@
     placeholder="Description..."
     class="task-input px-3 py-2 border border-gray-300 rounded w-full"
   />
-
-  <input 
+    <input
     type="date"
     [(ngModel)]="newDateFin"
+    [min]="today"
     class="task-input px-3 py-2 border border-gray-300 rounded w-full sm:w-48"
     [class.has-value]="newDateFin()"
   />
+
+  
   <button (click)="addTask()" [disabled]="!newTaskTitle()" class="btn btn-primary w-full sm:w-auto">
     Ajouter
   </button>
@@ -79,12 +81,16 @@
         <td class="px-4 py-2 align-top">{{ getUserName(task.userId) }}</td>
         <td class="px-4 py-2 text-center">
           <div class="flex justify-center gap-2">
-            <button (click)="EditTask(task)" class="hover:text-blue-600" title="Modifier">
-              <img src="/assets/icon/Edit Vector SVG Icon.svg" alt="Modifier" class="h-5 w-5 inline" />
-            </button>
-            <button (click)="deleteTask(task.id)" class="hover:text-red-600" title="Supprimer">
-              <img src="/assets/icon/Delete Vector Icon.svg" alt="Supprimer" class="h-5 w-5 inline" />
-            </button>
+            <div *ngIf="task.isCompleted != 2">
+              <button (click)="EditTask(task)" class="hover:text-blue-600" title="Modifier">
+                <img src="/assets/icon/Edit Vector SVG Icon.svg" alt="Modifier" class="h-5 w-5 inline" />
+              </button>
+              <button (click)="deleteTask(task.id)" class="hover:text-red-600" title="Supprimer" >
+                <img src="/assets/icon/Delete Vector Icon.svg" alt="Supprimer" class="h-5 w-5 inline" />
+              </button>
+            </div>
+            <img *ngIf="task.isCompleted == 2" src="/assets/icon/check_icon.svg" alt="Supprimer" class="h-5 w-5 inline" />
+
           </div>
         </td>
       </tr>

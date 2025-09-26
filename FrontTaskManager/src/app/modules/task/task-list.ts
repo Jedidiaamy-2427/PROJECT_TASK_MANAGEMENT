@@ -27,6 +27,7 @@ export class TaskListComponent {
   newTaskTitle = signal('');
   newTaskDescription = signal('');
   newDateFin = signal(null);
+  today = new Date().toISOString().split('T')[0];
 
   tasks = computed(() => {
     return this.taskService.getTasksByProject(this.selectedProjectId());
