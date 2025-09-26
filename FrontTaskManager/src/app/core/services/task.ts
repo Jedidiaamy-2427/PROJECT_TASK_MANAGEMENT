@@ -66,7 +66,6 @@ export class TaskService {
   }
 
   getTasksByProject(projectId: number | null) {
-    console.log('Filtering tasks for projectId:', this._tasks());
     return this._tasks().filter(t => t.projectId === projectId);
   }
 }

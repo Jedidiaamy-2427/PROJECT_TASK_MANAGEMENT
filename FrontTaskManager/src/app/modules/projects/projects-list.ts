@@ -3,6 +3,7 @@ import { ProjectService } from '../../core/services/project';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TitleService } from '../../core/services/titleService';
+import { TaskService } from '../../core/services/task';
 
 @Component({
   selector: 'app-projects-list',
@@ -17,13 +18,18 @@ export class ProjectsList implements OnInit {
  
   NoProjectTitle = () => this.projectCount() === 0 ? `Aucun projet pour l'instant` : `Total Projects: ${this.projectCount()}`;
 
-  constructor(private projectService: ProjectService, private router: Router, private titleService: TitleService) {
+  constructor(private projectService: ProjectService, 
+              private router: Router, 
+              private titleService: TitleService,
+              private taskService: TaskService
+            ) {
     this.projects = this.projectService.projects;
     this.projectCount = this.projectService.projectsCount;
   }
 
   ngOnInit() {
     this.projectService.loadAll().subscribe();
+    this.taskService.loadAll().subscribe();
     this.titleService.setTitle(`Liste des projets`);
   }
 
@@ -32,5 +38,10 @@ export class ProjectsList implements OnInit {
   remove(id: number) {
     if (!confirm('Delete project?')) return;
     this.projectService.delete(id).subscribe();
+  }
+
+  getProjectTasks(id: number) {
+    const tasks = this.taskService.getTasksByProject(id);
+    return tasks.length > 0 ? `${tasks.length} tâches` : 'Aucune tâche';
   }
 }

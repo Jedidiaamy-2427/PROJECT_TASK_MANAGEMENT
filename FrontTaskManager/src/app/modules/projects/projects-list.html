@@ -9,7 +9,7 @@
   <ul>
     <li *ngFor="let p of projects()" class="border p-3 rounded mb-2 flex justify-between items-center">
       <div>
-        <div class="font-semibold">{{ p.name }}</div>
+        <div class="font-semibold">{{ p.name }} - <span class="text-green-400">( {{ getProjectTasks(p.id) }} )</span> </div>
         <div class="text-sm text-gray-600">{{ p.description }}</div>
       </div>
       <div class="space-x-2 flex justify-end ml-4">
