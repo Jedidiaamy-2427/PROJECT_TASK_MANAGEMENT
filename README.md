@@ -106,8 +106,14 @@ http://localhost:8080/swagger/index.html
 Le projet possède une interface d'authentification 
 
 
+2. Voici un aperçu de la liste des projets :
+
+![Dashboard Task Management](assets/capture/projet_page.png)
+Le projet possède une sidebar dynamique, un navbar moderne et des badges pour les tâches en retard.
+
+
+
 2. Voici un aperçu de l’interface de Task Management App :
 
 ![Dashboard Task Management](assets/capture/task_page.png)
 
-Le projet possède une sidebar dynamique, un navbar moderne et des badges pour les tâches en retard.
