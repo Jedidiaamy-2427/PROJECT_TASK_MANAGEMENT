@@ -12,9 +12,13 @@
         <div class="font-semibold">{{ p.name }}</div>
         <div class="text-sm text-gray-600">{{ p.description }}</div>
       </div>
-      <div class="space-x-2">
-        <button (click)="edit(p.id)" class="btn-small"> Modifier </button>
-        <button (click)="remove(p.id)" class="btn-danger"> Supprimer </button>
+      <div class="space-x-2 flex justify-end ml-4">
+        <button (click)="edit(p.id)" class="bg-gray-600 rounded px-2"> 
+          <img src="/assets/icon/Edit_white.svg" alt="Supprimer" class="h-4 w-4 inline" /> 
+        </button>
+        <button (click)="remove(p.id)" class="btn-danger text-white"> 
+          <img src="/assets/icon/Delete Vector White.svg" alt="Supprimer" class="h-4 w-4 inline" />
+        </button>
       </div>
     </li>
   </ul>
