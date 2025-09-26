@@ -1,19 +1,19 @@
-<div class="task-header mb-4 flex items-center gap-4">
-  <h2 class="project-title text-2xl font-bold">
+<div class="task-header mb-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+  <h2 class="project-title text-xl sm:text-2xl font-bold">
     {{ selectedProject()?.name }}
   </h2>
-  <select [(ngModel)]="selectedProjectId" class="selectProject ml-4 px-2 py-1 rounded border border-gray-300">
+  <select [(ngModel)]="selectedProjectId" class="selectProject sm:ml-4 px-2 py-2 rounded border border-gray-300 w-full sm:w-auto">
     <option *ngFor="let project of projects()" [ngValue]="project.id">
       {{ project.name }}
     </option>
   </select>
 </div>
 
-<span class="project-description block mb-4 text-gray-500">
+<span class="project-description block mb-4 text-gray-400 text-sm sm:text-base">
   {{ selectedProject()?.description || 'Aucune description disponible.' }}
 </span>
 
-<div class="task-form flex items-center gap-2 mb-6">
+<div class="task-form flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-6">
   <input
     [(ngModel)]="newTaskTitle"
     placeholder="Nouvelle tâche..."
@@ -28,102 +28,111 @@
   <input 
     type="date"
     [(ngModel)]="newDateFin"
-    class="task-input px-3 py-2 border border-gray-300 rounded w-full"
+    class="task-input px-3 py-2 border border-gray-300 rounded w-full sm:w-48"
     [class.has-value]="newDateFin()"
   />
-  <button (click)="addTask()" [disabled]="!newTaskTitle()" class="bg-sky-600 text-white px-4 py-2 rounded hover:bg-sky-700 cursor:pointer transition">
+  <button (click)="addTask()" [disabled]="!newTaskTitle()" class="btn btn-primary w-full sm:w-auto">
     Ajouter
   </button>
 </div>
 
-<table class="task-table w-full bg-white rounded shadow">
-  <thead>
-    <tr class="bg-gray-100">
-      <th class="py-2 px-4 text-left">Tâches</th>
-      <th class="py-2 px-4 text-left">Description</th>
-      <th class="py-2 px-4 text-center">Statut</th>
-      <th class="py-2 px-4 text-left">Date Fin</th>
-      <th class="py-2 px-4 text-left">Acteur</th>
-      <th class="py-2 px-4 text-center">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let task of tasks()" class="border-b hover:bg-gray-50"
-        [class.bg-red-100]="isLate(task.duration, task.isCompleted)">
-      <td class="px-4 py-2">{{ task.title }} <br>  
-        <span *ngIf="isLate(task.duration, task.isCompleted)" class="text-xs text-red-600 font-bold ">
-          En retard
-        </span>
-      </td>
-      <td class="px-4 py-2">{{ task.description }}</td>
-      <td class="px-4 py-2 text-center">
-        <span
-          class="px-2 py-1 rounded-full text-xs font-semibold"
-          [ngClass]="{
-            'bg-red-100 text-red-800': task.isCompleted === 0,
-            'bg-yellow-100 text-yellow-800': task.isCompleted === 1,
-            'bg-green-100 text-green-800': task.isCompleted === 2
-          }"
-        >
-          {{
-            task.isCompleted === 0 ? 'En attente' :
-            task.isCompleted === 1 ? 'En cours' :
-            task.isCompleted === 2 ? 'Terminé' : ''
-          }}
-        </span>
-      </td>
-      <td class="px-4 py-2">{{ task.duration | date:'dd/MM/yyyy HH:mm' }}</td>
-      <td class="px-4 py-2">{{ getUserName(task.userId) }}</td>
-      <td class=" py-2 text-center flex  justify-center ">
-        <!-- Icône changer statut -->
-        <!-- Icone Modifier-->
-        <button (click)="EditTask(task)" class="hover:text-blue-600 mx-0.5" title="Modifier">
-          <img src="/assets/icon/Edit Vector SVG Icon.svg" alt="Modifier" class="h-5 w-5 inline" />
-        </button>
+<div class="overflow-x-auto">
+  <table class="task-table w-full bg-white rounded shadow min-w-[720px]">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="py-2 px-4 text-left">Tâches</th>
+        <th class="py-2 px-4 text-left">Description</th>
+        <th class="py-2 px-4 text-center">Statut</th>
+        <th class="py-2 px-4 text-left">Date Fin</th>
+        <th class="py-2 px-4 text-left">Acteur</th>
+        <th class="py-2 px-4 text-center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of tasks()" class="border-b hover:bg-gray-50"
+          [class.bg-red-100]="isLate(task.duration, task.isCompleted)">
+        <td class="px-4 py-2 align-top">
+          {{ task.title }} <br>
+          <span *ngIf="isLate(task.duration, task.isCompleted)" class="text-xs text-red-600 font-bold ">
+            En retard
+          </span>
+        </td>
+        <td class="px-4 py-2 align-top">{{ task.description }}</td>
+        <td class="px-4 py-2 text-center align-top">
+          <span
+            class="px-2 py-1 rounded-full text-xs font-semibold"
+            [ngClass]="{
+              'bg-red-100 text-red-800': task.isCompleted === 0,
+              'bg-yellow-100 text-yellow-800': task.isCompleted === 1,
+              'bg-green-100 text-green-800': task.isCompleted === 2
+            }"
+          >
+            {{
+              task.isCompleted === 0 ? 'En attente' :
+              task.isCompleted === 1 ? 'En cours' :
+              task.isCompleted === 2 ? 'Terminé' : ''
+            }}
+          </span>
+        </td>
+        <td class="px-4 py-2 align-top whitespace-nowrap">{{ task.duration | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td class="px-4 py-2 align-top">{{ getUserName(task.userId) }}</td>
+        <td class="px-4 py-2 text-center">
+          <div class="flex justify-center gap-2">
+            <button (click)="EditTask(task)" class="hover:text-blue-600" title="Modifier">
+              <img src="/assets/icon/Edit Vector SVG Icon.svg" alt="Modifier" class="h-5 w-5 inline" />
+            </button>
+            <button (click)="deleteTask(task.id)" class="hover:text-red-600" title="Supprimer">
+              <img src="/assets/icon/Delete Vector Icon.svg" alt="Supprimer" class="h-5 w-5 inline" />
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="tasks().length === 0">
+        <td colspan="6" class="text-center py-4 text-gray-500">Aucune tâche disponible.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-        <!-- Icône supprimer -->
-        <button (click)="deleteTask(task.id)" class="hover:text-red-600 mx-0.5" title="Supprimer">
-          <img src="/assets/icon/Delete Vector Icon.svg" alt="Supprimer" class="h-5 w-5 inline" />
-        </button>
-      </td>
-    </tr>
-    <tr *ngIf="tasks().length === 0">
-      <td colspan="5" class="text-center py-4 text-gray-500">Aucune tâche disponible.</td>
-  </tbody>
-</table>
-
-<div *ngIf="isOpen()" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-  <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+<div *ngIf="isOpen()" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
       <h2 class="text-xl font-bold mb-4">Modifier la tâche</h2>
       <!-- Section statut isolée -->
-      <div class="flex items-center justify-between mb-4">
-        <label class="font-semibold mr-2">Statut :</label>
-        <select [value]="selectedStatus()" (change)="selectedStatus.set($any($event.target).value)" class="py-1 border rounded p-2">
-          <option value="0">En attente</option>
-          <option value="1">En cours</option>
-          <option value="2">Terminé</option>
-        </select>
-        <button type="button"
-                (click)="changeStatus()"
-                class="ml-2 px-3 py-1 bg-sky-600 text-white rounded">
-          Changer
-        </button>
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+        <label class="font-semibold">Statut :</label>
+        <div class="flex gap-2 items-center">
+          <select [value]="selectedStatus()" (change)="selectedStatus.set($any($event.target).value)" class="py-1 border rounded p-2">
+            <option value="0">En attente</option>
+            <option value="1">En cours</option>
+            <option value="2">Terminé</option>
+          </select>
+          <button type="button"
+                  (click)="changeStatus()"
+                  class="px-3 py-1 bg-sky-600 text-white rounded">
+            Changer
+          </button>
+        </div>
       </div>
 
-      <!-- Barre de séparation -->
       <hr class="my-4 border-gray-300" />
 
-      <form [formGroup]="form" (ngSubmit)="save()">
-        <label class="block mb-2">Tache</label>
-        <input type="text" formControlName="title" class="border rounded w-full p-2 mb-3"/>
+      <form [formGroup]="form" (ngSubmit)="save()" class="space-y-3">
+        <div>
+          <label class="block mb-2">Tâche</label>
+          <input type="text" formControlName="title" class="border rounded w-full p-2"/>
+        </div>
 
-        <label class="block mb-2">Description</label>
-        <textarea formControlName="description" class="border rounded w-full p-2 mb-3"></textarea>
+        <div>
+          <label class="block mb-2">Description</label>
+          <textarea formControlName="description" class="border rounded w-full p-2"></textarea>
+        </div>
 
-        <label class="block mb-2">Date fin</label>
-        <input type="date" formControlName="duration" class="border rounded w-full p-2 mb-3"/>
+        <div>
+          <label class="block mb-2">Date fin</label>
+          <input type="date" formControlName="duration" class="border rounded w-full p-2"/>
+        </div>
 
-        <div class="flex justify-end gap-2 mt-4">
+        <div class="flex flex-col sm:flex-row justify-end gap-2 mt-4">
           <button type="button" (click)="close()" class="px-4 py-2 rounded bg-gray-300">Annuler</button>
           <button type="submit" class="px-4 py-2 rounded bg-sky-600 text-white">Enregistrer</button>
         </div>
