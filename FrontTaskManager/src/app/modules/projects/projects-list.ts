@@ -44,4 +44,14 @@ export class ProjectsList implements OnInit {
     const tasks = this.taskService.getTasksByProject(id);
     return tasks.length > 0 ? `${tasks.length} tâches` : 'Aucune tâche';
   }
+
+  editTask(id:number) {
+    this.router.navigate(['/tasks']);
+    this.projectService.selectedProjectId.set(id);
+  }
+
+  enableBtnTask(id:number) {
+    const tasks = this.taskService.getTasksByProject(id);
+    return tasks.length > 0
+  }
 }

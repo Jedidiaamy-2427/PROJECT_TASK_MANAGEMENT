@@ -2,7 +2,8 @@
   <h2 class="project-title text-xl sm:text-2xl font-bold">
     {{ selectedProject()?.name }}
   </h2>
-  <select [(ngModel)]="selectedProjectId" class="selectProject sm:ml-4 px-2 py-2 rounded border border-gray-300 w-full sm:w-auto">
+  
+  <select [(ngModel)]="selectedProjectId" class="sselectProject sm:ml-4 px-2 py-2 rounded border border-gray-300 w-full sm:w-auto">
     <option *ngFor="let project of projects()" [ngValue]="project.id">
       {{ project.name }}
     </option>
@@ -17,7 +18,7 @@
   <input
     [(ngModel)]="newTaskTitle"
     placeholder="Nouvelle tâche..."
-    class="task-input px-3 py-2 border border-gray-300 rounded w-full"
+    class="task-input px-3 py-2 border border-gray-300 rounded w-full "
   />
   <input
     [(ngModel)]="newTaskDescription"

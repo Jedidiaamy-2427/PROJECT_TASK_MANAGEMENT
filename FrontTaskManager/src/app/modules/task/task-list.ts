@@ -77,6 +77,11 @@ export class TaskListComponent {
   loadprojects() {
     this.projectService.loadAll().subscribe(projects => {
       this.projects.set(projects);
+
+      if(projects.length > 0 && this.projectService.selectedProjectId()) {
+        this.selectedProjectId.set(this.projectService.selectedProjectId())
+      }
+      
       if (projects.length > 0 && !this.selectedProjectId()) {
         this.selectedProjectId.set(projects[0].id);
       }

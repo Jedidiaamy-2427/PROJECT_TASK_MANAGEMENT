@@ -14,6 +14,7 @@ export class ProjectService {
   private api = `${environment.apiUrl}/Projects`;
   projects = signal<Project[]>([]);
   projectsCount = computed(() => this.projects().length);
+  selectedProjectId = signal<number | null>(null);
 
   constructor(private http: HttpClient) {}
 
