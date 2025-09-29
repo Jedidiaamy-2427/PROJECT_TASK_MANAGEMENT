@@ -1,14 +1,15 @@
-import { Component, OnInit, Signal } from '@angular/core';
+import { Component, OnInit, signal, Signal } from '@angular/core';
 import { ProjectService } from '../../core/services/project';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TitleService } from '../../core/services/titleService';
 import { TaskService } from '../../core/services/task';
+import { ProjectForm } from './project-form';
 
 @Component({
   selector: 'app-projects-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ProjectForm],
   templateUrl: './projects-list.html',
   styleUrls: ['./projects.css']
 })
@@ -16,9 +17,17 @@ export class ProjectsList implements OnInit {
   projects: ProjectService['projects'];
   projectCount: Signal<number>;
  
+
+  open(id?: any, isEdit?:boolean) {
+    this.projectService.ProjectID.set(id)
+    this.projectService.isEdit.set(isEdit)
+    this.projectService.isOpen.set(true);
+  }
+
+
   NoProjectTitle = () => this.projectCount() === 0 ? `Aucun projet pour l'instant` : `Total Projects: ${this.projectCount()}`;
 
-  constructor(private projectService: ProjectService, 
+  constructor(protected projectService: ProjectService, 
               private router: Router, 
               private titleService: TitleService,
               private taskService: TaskService
@@ -30,11 +39,17 @@ export class ProjectsList implements OnInit {
   ngOnInit() {
     this.projectService.loadAll().subscribe();
     this.taskService.loadAll().subscribe();
-    this.titleService.setTitle(`Liste des projets`);
+    this.titleService.setTitle(`Projets`);
   }
 
-  create() { this.router.navigate(['/projects/new']); }
-  edit(id: number) { this.router.navigate(['/projects', id, 'edit']); }
+  create() { 
+    this.open(null, false)
+    // this.router.navigate(['/projects/new']); 
+  }
+  edit(id: number) { 
+    this.projectService.ProjectID.set(id)
+    this.open(id, true);
+  }
   remove(id: number) {
     if (!confirm('Delete project?')) return;
     this.projectService.delete(id).subscribe();
@@ -54,4 +69,6 @@ export class ProjectsList implements OnInit {
     const tasks = this.taskService.getTasksByProject(id);
     return tasks.length > 0
   }
+
+  
 }

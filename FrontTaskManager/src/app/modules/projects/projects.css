@@ -5,6 +5,6 @@
 
 /** PROJECT FORM */
 .input { @apply border p-2 rounded w-full; }
-.btn { @apply bg-sky-600 text-white px-3 py-1 rounded; }
+.btn { @apply text-white px-3 py-1 rounded; }
 .container { @apply mx-auto p-4; }
     

@@ -1,7 +1,10 @@
 <div class="p-4 max-w-7xl mx-auto">
   <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
     <h2 class="text-xl sm:text-2xl font-bold">Projets ({{ projectCount() }})</h2>
-    <button class="btn btn-primary w-full sm:w-auto" (click)="create()">Nouveau Projet</button>
+    <button class="btn btn-primary w-full sm:w-auto flex" (click)="create()">
+      <img src="/assets/icon/add-category.svg" alt="Éditer" class="h-4 w-4 mt-1 mr-2" />
+      Nouveau Projet
+    </button>
   </div>
 
   <div *ngIf="projects().length === 0" class="text-gray-400 text-sm sm:text-base"> {{ NoProjectTitle() }}</div>
@@ -36,7 +39,8 @@
         <!-- Footer -->
         <div class="flex items-center justify-between pt-2">
           <div class="text-[11px] text-white/50">ID : {{ p.id }}</div>
-          <button (click)="editTask(p.id)" class="btn btn-primary px-3 py-1.5 text-sm" [disabled]="!enableBtnTask(p.id)"> 
+          <button (click)="editTask(p.id)" class="btn btn-primary px-3 py-1.5 text-sm flex" [disabled]="!enableBtnTask(p.id)"> 
+            <img src="/assets/icon/Pages Vector Icon.svg" alt="Supprimer" class="h-5 w-4  mr-2" />
             Gérer les tâches
           </button>
         </div>
@@ -44,3 +48,10 @@
     </li>
   </ul>
 </div>
+
+
+<div *ngIf="projectService.isOpen()" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
+      <app-project-form [id]="projectService.ProjectID()" [isEdit]="projectService.isEdit()"></app-project-form>
+    </div>
+  </div>

@@ -15,7 +15,11 @@ export class ProjectService {
   projects = signal<Project[]>([]);
   projectsCount = computed(() => this.projects().length);
   selectedProjectId = signal<number | null>(null);
-
+  
+  ProjectID = signal<number  | null>(null);
+  isEdit = signal<boolean | undefined>(false)
+  isOpen = signal(false);
+  
   constructor(private http: HttpClient) {}
 
   loadAll() {

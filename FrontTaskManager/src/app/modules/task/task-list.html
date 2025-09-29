@@ -115,8 +115,9 @@
           </select>
           <button type="button"
                   (click)="changeStatus()"
-                  class="px-3 py-1 bg-sky-600 text-white rounded">
-            Changer
+                  class="px-3 py-1 bg-sky-600 text-white flex rounded">
+            <img src="/assets/icon/change-status.svg" alt="Éditer" class="h-4 w-4 mt-1 mr-2" />
+            Changer 
           </button>
         </div>
       </div>
@@ -140,8 +141,12 @@
         </div>
 
         <div class="flex flex-col sm:flex-row justify-end gap-2 mt-4">
-          <button type="button" (click)="close()" class="px-4 py-2 rounded bg-gray-300">Annuler</button>
-          <button type="submit" class="px-4 py-2 rounded bg-sky-600 text-white">Enregistrer</button>
+          <button type="button" (click)="close()" class="py-2 rounded bg-red-400">
+            <img src="/assets/icon/cancel.svg" alt="Éditer" class="h-4 w-4 ml-3 mr-3" />
+          </button>
+          <button type="submit" class="rounded bg-sky-600 text-white">
+            <img src="/assets/icon/save.svg" alt="Éditer" class="h-4 w-4 ml-3 mr-3" />
+          </button>
         </div>
       </form>
     </div>
