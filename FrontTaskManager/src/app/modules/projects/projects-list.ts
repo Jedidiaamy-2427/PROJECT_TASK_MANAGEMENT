@@ -1,5 +1,6 @@
 import { Component, OnInit, signal, Signal } from '@angular/core';
 import { ProjectService } from '../../core/services/project';
+import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TitleService } from '../../core/services/titleService';
@@ -16,6 +17,7 @@ import { ProjectForm } from './project-form';
 export class ProjectsList implements OnInit {
   projects: ProjectService['projects'];
   projectCount: Signal<number>;
+  isLoading = signal(true);
  
 
   open(id?: any, isEdit?:boolean) {
@@ -37,8 +39,13 @@ export class ProjectsList implements OnInit {
   }
 
   ngOnInit() {
-    this.projectService.loadAll().subscribe();
-    this.taskService.loadAll().subscribe();
+    this.isLoading.set(true);
+    // Utiliser forkJoin serait encore mieux pour paralléliser, mais pour garder la simplicité :
+    this.projectService.loadAll().pipe(
+      finalize(() => this.taskService.loadAll().pipe(
+        finalize(() => this.isLoading.set(false))
+      ).subscribe())
+    ).subscribe();
     this.titleService.setTitle(`Projets`);
   }
 
